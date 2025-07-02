@@ -5,6 +5,7 @@
  * board fills (tie)
  */
 
+// adding a start button to the DOM. 
 const startButton = document.createElement('button')
 startButton.textContent = 'Start'
 const startSession = document.querySelector('#start-game')
@@ -15,7 +16,8 @@ const WIDTH = 7;
 
 let currPlayer = 1; // active player: 1 or 2
 const board = []; // array of rows, each row is array of cells  (board[y][x])
-let gameOver = false;
+let gameOver = false; // make a var called gameOver = false so that if the game is over it can be set to true and not allow any 
+// of the functions inside of handleClick() after if(gameOver) to execute, therefore not allowing any more clicking.
 
 /** makeBoard: create in-JS board structure:
  *    board = array of rows, each row is array of cells  (board[y][x])
@@ -23,11 +25,16 @@ let gameOver = false;
 
 function makeBoard() {
 // TODO: set "board" to empty HEIGHT x WIDTH matrix array
+// this for loop is making the rows inside of board which will be equal to Height - 1. 
 for(let i = 0; i < HEIGHT; i++){
+  // setting the rows to be empty arrays
   board[i] = [];
   // console.log((board[i]))
-  
+  // then this loop is setting how many columns there are going to be inside of the game board.
   for(let j = 0; j < WIDTH; j++){
+    // this is how you get your empty cells inside of board.
+    // So on the first loop you will get board[0][0] = null 
+    // then board[0][1] = null and so on. 
     board[i][j] = null;
   }
 }
@@ -64,10 +71,11 @@ function makeHtmlBoard() {
   htmlBoard.append(top);
 
   // TODO: add comment for this code
-  // this is a for loop that is adding rows and table data cells to create the game board where the pieces will be placed. 
-  // HEIGHT is being used first as you want to make the rows so that you can then add the data cells to each row.
+  // these for loops are adding table data rows and cells to create the game board so that you can set the ids equal to their position in board
+  // HEIGHT is being used first as you want to align with the loops in makeBoard() so the ids accuratly match their positions in board.
+  // these loops are how you visually get the board to appear in the browser. 
   for (let y = 0; y < HEIGHT; y++) {
-    // this is adding the table rows which the number of rows will be between 0 and whatever the var HEIGHT - 1 is set to.
+    // this is creating the element of table rows which will loop and create HEIGHT - 1. 
     const row = document.createElement("tr");
     // this loop is now adding each table data cell to each of the table rows.
     for (let x = 0; x < WIDTH; x++) {
@@ -200,15 +208,52 @@ function checkForWin() {
     );
   }
 
+  // another way to write this is:
+  // return cells.every(function(cell){
+  // let y = cell[0]
+  // let x = cell[1]
+  // return(
+        // y >= 0 && y < HEIGHT &&
+        // x >= 0 && x < WIDTH &&
+        // board[y][x] === currPlayer
+   // )
+// })
+
+// so on the first loop of the values listed below, and checking the first if(_win(horiz)), it would look like:
+// [[0,0], [0,1], [0,2], [0,3]].every(function(cell){
+  // let y = cell[0] which would be equal to 0 as this is the zero index of the 1st array that is inputed
+  // let x = cell[1] which would be equal to 0 as this is the one index of the 1st array that is inputed
+  // return(
+        // y >= 0 && y < HEIGHT && this will input true
+        // x >= 0 && x < WIDTH && this will return true
+        // board[y][x] === currPlayer this will grab what is stored in the board array which will be null, 1 or 2
+        // if the stored value is 1 and the currPlayer is set to 1 it will return true and move to the next index in the array which is [0,1]
+        // if the stored value is 1 and the currPlayer is set to 2 it will return false which will cause if(checkForWin) in handleClick
+        //  to be false, so this will then exit the fuction and the next function checkForTie() will execute.
+   // )
+// })
+
   // TODO: read and understand this code. Add comments to help you.
+  // this for loop is looping the length of the var Height - 1 which is set to 6 so this will loop from 0 to 5.
+  for (let y = 0; y < HEIGHT; y++) {
+    // this internal loop is looping the length of the var Width - 1 which is set to 7 so this will loop from 0 to 6. 
+    for (let x = 0; x < WIDTH; x++) {
+      // is this creating a variable called horiz which is equal to an array with nested arrays.
+      // So the first loop will be [[0,0], [0,1], [0,2], [0,3]]
+      const horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]];
+      // this is creating a variable called vert which is equal to an array with nested arrays.
+      // So the first loop will be [[0,0], [1,0], [2,0], [3,0]]
+      const vert = [[y, x], [y + 1, x], [y + 2, x], [y + 3, x]];
+      // this is creating a variable called diagDR which is equal to an array with nested arrays.
+      // So the first loop will be [[0,0], [1,1], [2,2], [3,3]]
+      const diagDR = [[y, x], [y + 1, x + 1], [y + 2, x + 2], [y + 3, x + 3]];
+      // this is creating a variable called diagDL which is equal to an array with nested arrays.
+      // So the first loop will be [[0,0], [1,-1], [2,-2], [3,-3]]
+      const diagDL = [[y, x], [y + 1, x - 1], [y + 2, x - 2], [y + 3, x - 3]];
 
-  for (var y = 0; y < HEIGHT; y++) {
-    for (var x = 0; x < WIDTH; x++) {
-      var horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]];
-      var vert = [[y, x], [y + 1, x], [y + 2, x], [y + 3, x]];
-      var diagDR = [[y, x], [y + 1, x + 1], [y + 2, x + 2], [y + 3, x + 3]];
-      var diagDL = [[y, x], [y + 1, x - 1], [y + 2, x - 2], [y + 3, x - 3]];
-
+      // this is an if statement saying that if (_win(horiz) or _win(vert) or _win(diagDR) or _win(diagDL))
+      // returns true then return true for the function checkForWin
+      // so for the first one _win(horiz) it plugs the variable horiz into the function _win with the argument cells being equal to horiz
       if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
         return true;
       }
@@ -217,13 +262,19 @@ function checkForWin() {
 }
 
 function checkForTie(){
+  // these are two loops which are being used to loop through all of the cells in the board by providing indexes for board[i][j]
+  // so on the first loop board[i][j] will be equal to board[0][0] which will be either null, 1 or 2.
     for(let i = 0; i < HEIGHT; i++){        
       for(let j = 0; j < WIDTH; j++){
+        // if the index position of board[0][0] is equal to null it will return false
         if(board[i][j] === null){
+          // this false will be inputed into the if(checkForTie) inside of handleClick() then the if statements handling currPlayer will be run
           return false
         }
       }
     }
+    // if the if statement above never returns true in that none of the coordinates from board[i][j] are equal to null 
+    // then it will return true to the if(checkForTie) which will return the endGame() function.
     return true
 }
 
