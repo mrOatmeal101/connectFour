@@ -10,8 +10,8 @@ startButton.textContent = 'Start'
 const startSession = document.querySelector('#start-game')
 startSession.append(startButton)
 
-const HEIGHT = 4;
-const WIDTH = 5;
+const HEIGHT = 6;
+const WIDTH = 7;
 
 let currPlayer = 1; // active player: 1 or 2
 const board = []; // array of rows, each row is array of cells  (board[y][x])
