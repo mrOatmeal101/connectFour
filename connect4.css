@@ -7,6 +7,18 @@
 }
 
 /* pieces are div within game table cells: draw as colored circles */
+/* creating an animation named drop */
+@keyframes drop{
+  /* declaring that the start of the animation timeline should have a position of 300px above the final position */
+  0% {
+    /* using -300px as there are 6 rows which are 50px tall so 50*6=300. So if you change the board size this will no longer work.*/
+    transform: translateY(-300px);
+  }
+  /* declaring that the end of the animation timeline should have no shift and be in the end position  */
+  100% {
+    transform: translateY(0);
+  }
+}
 
 .piece {
   /* TODO: make into circles */
@@ -14,16 +26,21 @@
   width: 80%;
   height: 80%;
   border-radius: 50%;
+  /* applying the drop keyframe animation, making it last .5s and using ease-out for a fast to slow transition */
+  animation: drop .5s ease-out;
 }
 
 /* TODO: make pieces red/blue,  depending on player 1/2 piece */
 .piece.player1 {
   background-color: red;
+  
 }
 
 .piece.player2 {
   background-color: blue;
 }
+
+
 /* column-top is table row of clickable areas for each column */
 
 #column-top td {

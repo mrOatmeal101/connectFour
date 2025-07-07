@@ -22,7 +22,6 @@ let gameOver = false; // make a var called gameOver = false so that if the game 
 /** makeBoard: create in-JS board structure:
  *    board = array of rows, each row is array of cells  (board[y][x])
  */
-
 function makeBoard() {
 // TODO: set "board" to empty HEIGHT x WIDTH matrix array
 // this for loop is making the rows inside of board which will be equal to Height - 1. 
@@ -42,7 +41,6 @@ for(let i = 0; i < HEIGHT; i++){
 }
 
 /** makeHtmlBoard: make HTML table and row of column tops. */
-
 function makeHtmlBoard() {
   // TODO: get "htmlBoard" variable from the item in HTML w/ID of "board"
   const htmlBoard = document.querySelector('#board')
@@ -70,7 +68,6 @@ function makeHtmlBoard() {
   // this is appending the var top which now is a table row with table data within each cell to the game board. 
   htmlBoard.append(top);
 
-  // TODO: add comment for this code
   // these for loops are adding table data rows and cells to create the game board so that you can set the ids equal to their position in board
   // HEIGHT is being used first as you want to align with the loops in makeBoard() so the ids accuratly match their positions in board.
   // these loops are how you visually get the board to appear in the browser. 
@@ -93,7 +90,6 @@ function makeHtmlBoard() {
 }
 
 /** findSpotForCol: given column x, return top empty y (null if filled) */
-
 function findSpotForCol(x) {
   // TODO: write the real version of this, rather than always returning 0
   // console.log(x);
@@ -114,13 +110,19 @@ function findSpotForCol(x) {
 
 function placeInTable(y, x) {
   // TODO: make a div and insert into correct table cell
-    // console.log(y,x) // checking to make sure the correct
+  // console.log(y,x) // checking to make sure the correct
+  // piecePosition is getting the id of the cell which is grabbed from handleClickEvent and findSpotForCol and then used as the args
+  // for placeInTable. After selecting the cell that matches the id that is generated from makeHtlmBoard in the for loops.
   let piecePosition = document.getElementById(`${y}-${x}`)
+  // creating a div so that you can give properties to it so that it shows up visually in the DOM.
   let piece = document.createElement("div")
+  // if statement where if currPlayer = 1 then append the div piece to that cell
+  // also adding a classlist so that you can set different colors for the different players. 
   if(currPlayer === 1){
     piece.classList.add("piece","player1")
     piecePosition.append(piece)
   }
+  // same as above but for the 2nd player. 
     if(currPlayer === 2){
     piece.classList.add("piece","player2")
     piecePosition.append(piece)
@@ -129,25 +131,31 @@ function placeInTable(y, x) {
 }
 
 /** endGame: announce game end */
-
 function endGame(msg) {
-  // TODO: pop up alert message
+  // creating a variable to capture the div with the id of end-game for the ability to append elements to it anouncing the end of the game
   const endGameBanner = document.getElementById('end-game')
+  // creating a variable that holds an h2 tag so that you can add text showing the players that the game is over
   const endGameText = document.createElement('h2')
+  // setting the textContent of the newly created h2 equal to the argument from the function
   endGameText.textContent = msg
+  // creating a restart button so that users can restart the game without having to click the reload window button in the browers
   const restartbutton = document.createElement('button')
+  // changing the textContent of the button to make it clear as to what it is
   restartbutton.textContent = 'Restart Game'
+  // adding the event listener to the restart button so that it actually preforms the actions disired of it.
   restartbutton.addEventListener('click', function(){
+  // setting the gameOnOff var to false so that the start button will appear.
   gameOnOff = false;
+  // making it so that when the button is clicked it reloads the browser. 
   window.location.reload()
-  
   }) 
+  // setting the gameOver var equal to true so that the users can no longer click on the top row to play pieces
   gameOver = true;
+  // appending the end game h2 and restartbutton to the div with the id of end-game so that the users can see that the game is over.
   endGameBanner.append(endGameText, restartbutton)
 }
 
 /** handleClick: handle click of column top to play piece */
-
 function handleClick(evt) {
   if(gameOver){
     return
@@ -278,6 +286,7 @@ function checkForTie(){
     return true
 }
 
+// adding the event listener to the start button so that the inital functions run and the game begins. 
 gameOnOff = false 
 startButton.addEventListener('click', function(){
   if(!gameOnOff){
