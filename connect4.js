@@ -284,6 +284,13 @@ function checkForTie(){
     // if the if statement above never returns true in that none of the coordinates from board[i][j] are equal to null 
     // then it will return true to the if(checkForTie) which will return the endGame() function.
     return true
+
+  // another way of checking for a tie. 
+  // const checkForTie = board.every(function(row){
+  //     return row.every(function(cell){
+  //         return cell !== null;
+  //     })
+  // })
 }
 
 // adding the event listener to the start button so that the inital functions run and the game begins. 
